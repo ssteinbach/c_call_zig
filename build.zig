@@ -12,6 +12,8 @@ pub fn build(b: *Builder) void {
     const mode = b.standardReleaseOptions();
 
     const lib = b.addStaticLibrary("libTestProg", "simple.zig");
+    // to ensure that its statically linkable to c
+    lib.bundle_compiler_rt = true;
 
     lib.setTarget(target);
     lib.setBuildMode(mode);
