@@ -1,6 +1,8 @@
-all: test.c simple.zig
+CC = clang
+
+all: main.c json_reader.zig
 	zig build
-	clang  test.c -llibTestProg -Lzig-out/lib -otest
+	$(CC) main.c -lzigJsonReader -Lzig-out/lib -o c_to_zig_json_reader
 
 
 test:
@@ -8,5 +10,5 @@ test:
 
 
 clean:
-	rm test
+	rm -f c_to_zig_json_reader
 	rm -rf zig-cache zig-out

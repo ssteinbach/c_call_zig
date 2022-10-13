@@ -11,17 +11,12 @@ pub fn build(b: *Builder) void {
     // between Debug, ReleaseSafe, ReleaseFast, and ReleaseSmall.
     const mode = b.standardReleaseOptions();
 
-    const lib = b.addStaticLibrary("libTestProg", "simple.zig");
+    const lib = b.addStaticLibrary("zigJsonReader", "json_reader.zig");
+
     // to ensure that its statically linkable to c
     lib.bundle_compiler_rt = true;
 
     lib.setTarget(target);
     lib.setBuildMode(mode);
     lib.install();
-
-    // const run_cmd = exe.run();
-    // run_cmd.step.dependOn(b.getInstallStep());
-
-    // const run_step = b.step("run", "Run the app");
-    // run_step.dependOn(&run_cmd.step);
 }
