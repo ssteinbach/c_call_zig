@@ -10,14 +10,14 @@ const c = @cImport(
     }
 );
 
-pub fn parse_json_err(file_path: []const u8, t: anytype) !t {
+pub fn parse_json_err(file_path: []const u8, T: anytype) !T {
     const fi = try std.fs.cwd().openFile(file_path, .{});
     defer fi.close();
 
     const source = try fi.readToEndAlloc(ALLOCATOR, std.math.maxInt(u32));
     var stream = std.json.TokenStream.init(source);
 
-    return try std.json.parse(t, &stream, .{});
+    return try std.json.parse(T, &stream, .{});
 }
 
 pub export fn parse_json_ptr(fpath:[*c]u8, result:*c.single_int) void {
