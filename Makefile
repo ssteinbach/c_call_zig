@@ -1,6 +1,6 @@
 all: test.c simple.zig
 	zig build
-	clang test.c -llibTestProg -Lzig-out/lib
+	clang test.c -llibTestProg -Lzig-out/lib -otest
 
 clean:
 	rm test
