@@ -1,3 +1,3 @@
 #include <stdint.h>
 
-int32_t parse_json();
+int32_t parse_json(const char* fpath);

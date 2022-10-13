@@ -8,8 +8,7 @@ const testthing = struct {
     val: i32,
 };
 
-pub fn parse_json_err() !i32 {
-    const file_path = "test.json";
+pub fn parse_json_err(file_path: []const u8) !i32 {
     const fi = try std.fs.cwd().openFile(file_path, .{});
     defer fi.close();
 
@@ -21,12 +20,12 @@ pub fn parse_json_err() !i32 {
     return result.val;
 }
 
-pub export fn parse_json() i32 {
-    return parse_json_err() catch unreachable;
+pub export fn parse_json(fpath:[*c]u8) i32 {
+    return parse_json_err(std.mem.span(fpath)) catch unreachable;
 }
 
 test "test_parse" {
-    try expectEqual(parse_json(), 14);
+    try expectEqual(parse_json_err("test.json"), 14);
 }
 
 pub export fn foo() i32 {
