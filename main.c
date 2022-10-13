@@ -4,8 +4,9 @@
 int 
 main() 
 {
-    int32_t result_from_zig = parse_json("test.json");
-    printf("read from json: %d\n", result_from_zig);
+    struct single_int result;
+    parse_json_ptr("test.json", &result);
+    printf("read from json: %d\n", result.val);
 
     return 0;
 }

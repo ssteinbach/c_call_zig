@@ -12,6 +12,8 @@ pub fn build(b: *Builder) void {
     const mode = b.standardReleaseOptions();
 
     const lib = b.addStaticLibrary("zigJsonReader", "json_reader.zig");
+    lib.linkLibC();
+    lib.addIncludePath(".");
 
     // to ensure that its statically linkable to c
     lib.bundle_compiler_rt = true;
