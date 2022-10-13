@@ -12,7 +12,6 @@ pub fn build(b: *Builder) void {
     const mode = b.standardReleaseOptions();
 
     const lib = b.addStaticLibrary("libTestProg", "simple.zig");
-    // lib.emit_h = true;
 
     lib.setTarget(target);
     lib.setBuildMode(mode);
