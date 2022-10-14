@@ -26,7 +26,7 @@ includes:
 ```zig
 const lib = b.addStaticLibrary("zigJsonReader", "json_reader.zig");
 lib.linkLibC();
-lib.addIncludePath(".");
+lib.bundle_compiler_rt = true;
 ```
 
 Additionally, the header file is written by hand.
