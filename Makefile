@@ -6,7 +6,7 @@ all: main.c json_reader.zig
 
 
 test:
-	zig test simple.zig
+	zig test json_reader.zig
 
 
 clean:
