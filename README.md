@@ -18,6 +18,14 @@ to parse a C-struct out of JSON and return it.
 > ./c_to_zig_json_reader
 ```
 
+## Testing
+
+There is a (small) unit test in `src/json_reader.zig`.
+
+```bash
+> make test
+```
+
 ## Build.zig Note
 
 When building the static library to wrap in C, make sure the build.zig
@@ -25,7 +33,6 @@ includes:
 
 ```zig
 const lib = b.addStaticLibrary("zigJsonReader", "json_reader.zig");
-lib.linkLibC();
 lib.bundle_compiler_rt = true;
 ```
 
