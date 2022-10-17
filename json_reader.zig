@@ -10,14 +10,18 @@ const c = @cImport(
     }
 );
 
-pub fn parse_json_err(file_path: []const u8, T: anytype) !T {
+pub fn thingy(first: i32, second: f32) !first {
+    return first + @floatToInt(i32, second);
+}
+
+pub fn parse_json_err(file_path: []const u8, target_obj: anytype) !target_obj {
     const fi = try std.fs.cwd().openFile(file_path, .{});
     defer fi.close();
 
     const source = try fi.readToEndAlloc(ALLOCATOR, std.math.maxInt(u32));
     var stream = std.json.TokenStream.init(source);
 
-    return try std.json.parse(T, &stream, .{});
+    return try std.json.parse(target_obj, &stream, .{});
 }
 
 pub export fn parse_json_ptr(fpath:[*c]u8, result:*c.single_int) void {
@@ -40,6 +44,7 @@ pub export fn parse_json_array(fpath:[*c]u8) c.array_float {
 
 test "test_parse" {
     try expectEqual(parse_json_err("test.json"), 14);
+    try expectEqual(thingy(1, 2.3), @as(i32, 3));
 }
 
 pub export fn foo() i32 {
