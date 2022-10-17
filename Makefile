@@ -1,13 +1,13 @@
 CC = clang
 
-all: main.c json_reader.zig
+all: src/main.c src/json_reader.zig
 	zig build
-	$(CC) main.c -lzigJsonReader -Lzig-out/lib -o c_to_zig_json_reader
-
+	$(CC) src/main.c -Isrc -lzigJsonReader -Lzig-out/lib -o c_to_zig_json_reader
+	@echo "running test program..."
+	./c_to_zig_json_reader
 
 test:
-	zig test json_reader.zig
-
+	zig build test
 
 clean:
 	rm -f c_to_zig_json_reader

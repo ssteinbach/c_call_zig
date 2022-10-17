@@ -11,8 +11,8 @@ pub fn build(b: *Builder) void {
     // between Debug, ReleaseSafe, ReleaseFast, and ReleaseSmall.
     const mode = b.standardReleaseOptions();
 
-    const lib = b.addStaticLibrary("zigJsonReader", "json_reader.zig");
-    lib.addIncludePath(".");
+    const lib = b.addStaticLibrary("zigJsonReader", "src/json_reader.zig");
+    lib.addIncludePath("src");
 
     // to ensure that its statically linkable to c
     lib.bundle_compiler_rt = true;
