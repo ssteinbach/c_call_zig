@@ -20,4 +20,11 @@ pub fn build(b: *Builder) void {
     lib.setTarget(target);
     lib.setBuildMode(mode);
     lib.install();
+
+    const lib_tests = b.addTest("src/json_reader.zig");
+    lib_tests.setBuildMode(mode);
+    lib_tests.addIncludePath("src");
+
+    const test_step = b.step("test", "Run tests");
+    test_step.dependOn(&lib_tests.step);
 }
