@@ -14,3 +14,8 @@ struct single_int parse_json_int(
 struct array_float parse_json_array_float(
     const char* fpath
 );
+
+void print_to_string(
+        char** buf,
+        uint8_t bufsize
+);

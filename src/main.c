@@ -23,6 +23,11 @@ main()
             result_arr.child.val
     );
 
+    char buf[1024];
+
+    print_to_string((char**)&buf, 1024);
+
+    printf("got string: %s\n", buf);
 
     return 0;
 }

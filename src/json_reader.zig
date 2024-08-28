@@ -101,3 +101,22 @@ pub export fn foo() i32
     std.debug.print("hello, c\n", .{});
     return 12;
 }
+
+pub export fn print_to_string(
+    buf: *[*c]u8,
+    bufsize: c_uint,
+) void
+{
+    std.log.debug("zig impl\n", .{});
+
+    const localbuf = (buf.*)[0..bufsize];
+
+    _ = std.fmt.bufPrint(
+        localbuf,
+        "hello, buffer: {d}",
+        .{ 12 }
+    ) catch {
+        std.log.err("something went wrong.\n", .{});
+        return;
+    };
+}
