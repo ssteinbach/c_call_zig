@@ -1,4 +1,5 @@
 #include "struct_def.h"
+#include <stdio.h>
 
 // c-header for zig functions in zigJsonReader
 // struct wrappers are illustrative and not required
@@ -15,7 +16,8 @@ struct array_float parse_json_array_float(
     const char* fpath
 );
 
+// example of printing to a string in zig
 void print_to_string(
-        char** buf,
-        uint8_t bufsize
+    char* buf,
+    size_t bufsize
 );

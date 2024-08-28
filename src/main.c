@@ -25,7 +25,7 @@ main()
 
     char buf[1024];
 
-    print_to_string((char**)&buf, 1024);
+    print_to_string(buf, 1024);
 
     printf("got string: %s\n", buf);
 

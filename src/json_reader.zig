@@ -103,13 +103,13 @@ pub export fn foo() i32
 }
 
 pub export fn print_to_string(
-    buf: *[*c]u8,
-    bufsize: c_uint,
+    buf: [*]u8,
+    bufsize: usize,
 ) void
 {
     std.log.debug("zig impl\n", .{});
 
-    const localbuf = (buf.*)[0..bufsize];
+    const localbuf = buf[0..bufsize];
 
     _ = std.fmt.bufPrint(
         localbuf,
