@@ -5,15 +5,15 @@ int
 main() 
 {
     struct single_int result;
-    parse_json_ptr("test.json", &result);
+    parse_json_into_ptr("test.json", &result);
     printf("read from json: %d\n", result.val);
 
     result.val = -123;
-    result = parse_json_value("test.json");
+    result = parse_json_int("test.json");
 
     printf("read from json: %d\n", result.val);
 
-    struct array_float result_arr = parse_json_array("test.array.json");
+    struct array_float result_arr = parse_json_array_float("test.array.json");
     printf(
             "read from json: [%g %g %g %g] %d\n",
             result_arr.values[0],

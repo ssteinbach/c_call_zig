@@ -1,3 +1,5 @@
+//! c wrapper around the built in json parser
+
 const std = @import("std");
 const expectEqual = std.testing.expectEqual;
 
@@ -10,42 +12,92 @@ const c = @cImport(
     }
 );
 
-pub fn parse_json_err(file_path: []const u8, comptime target_type: type) !target_type {
-    const fi = try std.fs.cwd().openFile(file_path, .{});
+/// wraps the built in json parser 
+pub fn parse_json_to_type(
+    allocator: std.mem.Allocator,
+    file_path: []const u8,
+    comptime target_type: type,
+) !target_type 
+{
+    const fi = try std.fs.cwd().openFile(
+        file_path,
+        .{}
+    );
     defer fi.close();
 
-    const source = try fi.readToEndAlloc(ALLOCATOR, std.math.maxInt(u32));
-    var stream = std.json.TokenStream.init(source);
+    const source = try fi.readToEndAlloc(
+        allocator,
+        std.math.maxInt(u32)
+    );
 
-    return try std.json.parse(target_type, &stream, .{});
+    const value = try std.json.parseFromSlice(
+        target_type,
+        allocator,
+        source,
+        .{},
+    );
+
+    return value.value;
 }
 
-pub export fn parse_json_ptr(fpath:[*c]u8, result:*c.single_int) void {
+/// parse the json file at fpath and store the result in result
+pub export fn parse_json_into_ptr(
+    /// path to the file to parse
+    fpath:[*c]u8,
+    /// pointer to result object in memory to fill
+    result:*c.single_int,
+) void 
+{
     result.* = (
-        parse_json_err(std.mem.span(fpath), c.single_int) catch unreachable
+        parse_json_to_type(
+            ALLOCATOR,
+            std.mem.span(fpath),
+            c.single_int
+        ) catch unreachable
     );
 }
 
-pub export fn parse_json_value(fpath:[*c]u8) c.single_int {
+/// parse a single integer value from a json file and return the result
+pub export fn parse_json_int(
+    fpath:[*c]u8,
+) c.single_int 
+{
     return (
-        parse_json_err(std.mem.span(fpath), c.single_int) catch unreachable
+        parse_json_to_type(
+            ALLOCATOR,
+            std.mem.span(fpath),
+            c.single_int,
+        ) catch unreachable
     );
 }
 
-pub export fn parse_json_array(fpath:[*c]u8) c.array_float {
+/// parse an array of floats from a json file
+pub export fn parse_json_array_float(
+    fpath:[*c]u8
+) c.array_float 
+{
     return (
-        parse_json_err(std.mem.span(fpath), c.array_float) catch unreachable
+        parse_json_to_type(
+            ALLOCATOR,
+            std.mem.span(fpath),
+            c.array_float
+        ) catch unreachable
     );
 }
 
 test "test_parse" {
     try expectEqual(
-        parse_json_err("test.json", c.single_int),
+        parse_json_to_type(
+            ALLOCATOR,
+            "test.json",
+            c.single_int,
+        ),
         c.single_int{.val=14}
     );
 }
 
-pub export fn foo() i32 {
+pub export fn foo() i32 
+{
     std.debug.print("hello, c\n", .{});
     return 12;
 }

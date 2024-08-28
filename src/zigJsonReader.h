@@ -1,5 +1,16 @@
 #include "struct_def.h"
 
-void parse_json_ptr(const char* fpath, struct single_int* result);
-struct single_int parse_json_value(const char* fpath);
-struct array_float parse_json_array(const char* fpath);
+// c-header for zig functions in zigJsonReader
+// struct wrappers are illustrative and not required
+
+void parse_json_into_ptr(
+        const char* fpath,
+        struct single_int* result
+);
+
+struct single_int parse_json_int(
+    const char* fpath
+);
+struct array_float parse_json_array_float(
+    const char* fpath
+);
