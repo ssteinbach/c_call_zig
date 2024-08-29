@@ -8,7 +8,7 @@ to parse a C-struct out of JSON and return it.
 
 ## Requirements
 
-* Zig (built against 0.10.0-dev.4217+9d8cdb855)
+* Zig (built against 0.13.0)
 * C toolchain (clang)
 
 ## Building
