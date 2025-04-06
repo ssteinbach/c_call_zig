@@ -16,7 +16,7 @@ pub fn build(
             .name = "zigJsonReader",
             .target = target,
             .optimize = optimize,
-            .root_source_file = b.path("src/json_reader.zig"),
+            .root_source_file = b.path("src/root.zig"),
         },
     );
     lib.addIncludePath(b.path("src"));
@@ -38,7 +38,7 @@ pub fn build(
     const lib_tests = b.addTest(
         .{
             .name = "test_zigJsonReader",
-            .root_source_file = b.path("src/json_reader.zig"),
+            .root_source_file = b.path("src/root.zig"),
             .target = target,
         }
     );
