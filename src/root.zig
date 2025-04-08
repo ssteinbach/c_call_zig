@@ -1,7 +1,6 @@
 //! c wrapper around the built in json parser
 
 const std = @import("std");
-const expectEqual = std.testing.expectEqual;
 
 var raw = std.heap.GeneralPurposeAllocator(.{}){};
 const ALLOCATOR:std.mem.Allocator = raw.allocator();
@@ -86,7 +85,7 @@ pub export fn parse_json_array_float(
 }
 
 test "test_parse" {
-    try expectEqual(
+    try std.testing.expectEqual(
         parse_json_to_type(
             ALLOCATOR,
             "test.json",
