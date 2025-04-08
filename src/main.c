@@ -4,6 +4,8 @@
 int 
 main() 
 {
+    printf("Tests from C code\n");
+
     struct single_int result;
     parse_json_into_ptr("test.json", &result);
     printf("read from json: %d\n", result.val);
@@ -24,10 +26,10 @@ main()
     );
 
     char buf[1024];
-
     print_to_string(buf, 1024);
-
     printf("got string: %s\n", buf);
+
+    printf("C tests are all done\n");
 
     return 0;
 }

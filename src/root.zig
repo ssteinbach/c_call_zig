@@ -28,6 +28,7 @@ pub fn parse_json_to_type(
         allocator,
         std.math.maxInt(u32)
     );
+    defer allocator.free(source);
 
     const value = try std.json.parseFromSlice(
         target_type,
@@ -35,6 +36,7 @@ pub fn parse_json_to_type(
         source,
         .{},
     );
+    defer value.deinit();
 
     return value.value;
 }
@@ -86,12 +88,12 @@ pub export fn parse_json_array_float(
 
 test "test_parse" {
     try std.testing.expectEqual(
+        c.single_int{.val=14},
         parse_json_to_type(
-            ALLOCATOR,
+            std.testing.allocator,
             "test.json",
             c.single_int,
         ),
-        c.single_int{.val=14}
     );
 }
 

@@ -11,9 +11,12 @@ pub fn build(
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
 
+    const test_step = b.step("test", "Run tests");
+
+    // zig library
     const lib = b.addStaticLibrary(
         .{
-            .name = "zigJsonReader",
+            .name = "c_call_zig_json",
             .target = target,
             .optimize = optimize,
             .root_source_file = b.path("src/root.zig"),
@@ -27,7 +30,7 @@ pub fn build(
     ).step;
     const install = b.step(
         "install_zig_lib",
-        "install the zigJsonReader library",
+        "install the c_call_zig_json library",
     );
     install.dependOn(lib_install);
     b.getInstallStep().dependOn(install);
@@ -37,13 +40,37 @@ pub fn build(
 
     const lib_tests = b.addTest(
         .{
-            .name = "test_zigJsonReader",
+            .name = "test_c_call_zig_json",
             .root_source_file = b.path("src/root.zig"),
             .target = target,
+            .optimize = optimize,
         }
     );
     lib_tests.addIncludePath(b.path("src"));
 
-    const test_step = b.step("test", "Run tests");
-    test_step.dependOn(&lib_tests.step);
+    const run_lib_tests = b.addRunArtifact(lib_tests);
+
+    test_step.dependOn(&run_lib_tests.step);
+
+    // c tests
+    const c_exe = b.addExecutable(
+        .{
+            .name = "c_call_zig",
+            .target = target,
+            .optimize = optimize,
+        }
+    );
+    c_exe.addCSourceFile(
+        .{
+            .file = b.path("src/main.c"),
+        }
+    );
+    c_exe.addIncludePath(b.path("src"));
+    c_exe.linkLibC();
+    c_exe.linkLibrary(lib);
+
+    b.installArtifact(c_exe);
+
+    const c_run = b.addRunArtifact(c_exe);
+    test_step.dependOn(&c_run.step);
 }
